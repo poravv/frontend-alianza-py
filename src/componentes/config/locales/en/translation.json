@@ -1,0 +1,43 @@
+{
+    "welcome": "Welcome",
+    "navbar":{
+        "home":"Home",
+        "about":"About",
+        "catalogue":"Catalogue",
+        "contact":"Contact",
+        "identify":"Identify"
+    },
+    "footer": {
+        "category":"Category"
+    },
+    "common":{
+        "search":"Search...",
+        "languaje":"Idioms",
+        "selected":"Select an item",
+        "save":"Save"
+    },
+    "identify":{
+        "title":"The best preferential attention",
+        "subtitle":"in Alianza Inmobiliaria",
+        "description":"Find the best real estate offers in our catalog and receive excellent attention from our advisors",
+        "sign_in":"Sign in",
+        "no_member":"Not a member?",
+        "forgot_password":"Forgot password?",
+        "register":"Register",
+        "signup":"Sign Up",
+        "fst_name":"First Name",
+        "last_name":"Last Name",
+        "email":"Email address",
+        "phone":"Phone number",
+        "password": "Password",
+        "rep_password": "Repeat password",
+        "city":"City",
+        "district":"District",
+        "password_new":"New password",
+        "rep_password_new": "Repeat new Password",
+        "address":"Address"
+    },
+    "usuario":{
+        "title":"My user"
+    }
+}

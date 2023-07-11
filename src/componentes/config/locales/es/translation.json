@@ -1,0 +1,43 @@
+{
+    "welcome": "Bienvenído",
+    "navbar":{
+        "home":"Inicio",
+        "about":"Nosotros",
+        "catalogue":"Catálogo",
+        "contact":"Contacto",
+        "identify":"Identificarse"
+    },
+    "footer": {
+        "category":"Categoría"
+    },
+    "common":{
+        "search":"Buscar...",
+        "languaje":"Idiomas",
+        "selected":"Seleccione un elemento",
+        "save":"Guardar"
+    },
+    "identify":{
+        "title":"La mejor atención preferencial",
+        "subtitle":"en Alianza Inmobiliaria",
+        "description":"Encuentra las mejores ofertas inmobiliarias en nuestro catálogo y recibe una excelente atención de nuestros asesores",
+        "sign_in":"Iniciar sesion",
+        "no_member":"Aun no eres miembro?",
+        "forgot_password":"Olvidaste la contraseña?",
+        "register":"Registro",
+        "signup":"Registrarse",
+        "fst_name":"Nombre",
+        "last_name":"Apellido",
+        "email":"Correo",
+        "phone":"Número de teléfono",
+        "password": "Contraseña",
+        "rep_password": "Repetir contraseña",
+        "city":"Ciudad",
+        "district":"Barrio",
+        "password_new":"Contraseña nueva",
+        "rep_password_new": "Repetir contraseña nueva",
+        "address":"Direccion"
+    },
+    "usuario":{
+        "title":"Mi usuario"
+    }
+}
