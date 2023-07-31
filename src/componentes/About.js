@@ -14,8 +14,8 @@ export default function About() {
                                 ¿Quién debe practicar cualquier tipo de trabajo excepto para obtener algún beneficio de él?
                             </p>
                         </div>
-                        <div className="col-md-4">
-                            <img src={require('./img/about-hero.svg')} alt="About Hero" />
+                        <div className="col-md-4" >
+                            <img style={{ maxWidth:`300px` }} src={require('../componentes/img/logo2.jpeg')} alt="About Hero" />
                         </div>
                     </div>
                 </div>

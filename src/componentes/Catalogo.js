@@ -1,63 +1,99 @@
-
+import { useNavigate } from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
+import { separadorMiles } from "./utils/Separador";
+import DetallePropiedad from "./DetallePropiedad";
+import { useState } from 'react'
+import { Carousel } from "react-bootstrap";
 
-const Market = ({ dato, t }) => {
+const Catalogo = ({ dato, usuario, t }) => {
+    //console.log(dato)
+    const [detalle, setDetalle] = useState(false);
+    const [propiedad, setPropiedad] = useState(null);
+    const navigate = useNavigate();
+    function navegacion(direccion) {
+        navigate(direccion);
+    }
+    const nuevoRegistro = () => {
+        //console.log(usuario?.nivel)
+        if (usuario?.nivel === 2) {
+            return <button type="submit" className="input-group-text bg-primary text-light" onClick={() => navegacion('/nuevo')} >
+                Nuevo registro
+            </button>
+        }
+    }
+
+    const onchangeDetalle = (e, valor) => {
+        e.preventDefault();
+        setPropiedad(valor)
+        setDetalle(!detalle);
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
 
     const catalogo = () => (
-        <div className="card-group">
+        <div className="card-group" >
             {dato ?
-                dato.map((dato, index) => (
-                    <div key={index} className="card m-1" style={{ minWidth: `200px`, maxWidth: `500px` }}>
-                        <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
-                            <div className="carousel-inner">
-                                {
-                                    dato.propiedad_has_fotos.fotos_propiedad.map((fotos, index) => (
-                                        imagenes(fotos, index)
-                                        //console.log(fotos)
-                                    ))
-                                }
-                            </div>
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-titulo">{dato.titulo}</h5>
-                            <p className="card-text">{dato.descripcion}</p>
-                            <p className="card-text"><small className="text-muted">{dato.precio}</small></p>
+                dato.map((row, index) => {
+                    return <div
+                        key={index}
+                        className="card m-1 shadow bg-white rounded"
+                        style={{ minWidth: `300px`, maxWidth: `500px` }}
+                    >
+                        <Carousel fade interval={90000}>
+                            {
+                                row?.Propiedad_has_fotos.length !== 0 ?
+                                    row?.Propiedad_has_fotos?.map((phf, index) => (
+                                        phf.fotos_propiedads?.map((foto) => (
+                                            imagenes(foto?.name, index)
+                                        ))
+                                    )) :
+                                    imagenes(null, 1)
+                            }
+                        </Carousel>
+
+                        <div className="card-body" style={{ cursor:`pointer` }} onClick={(e) => onchangeDetalle(e, row)}>
+                            <h5 className="card-titulo">{row.titulo}</h5>
+                            <p className="card-text">{row.descripcion}</p>
+                            <p className="card-text"><small className="text-muted">{separadorMiles(parseInt(row.precio))}</small></p>
                         </div>
                     </div>
-                ))
+                })
                 : null}
         </div>
     )
 
-    const imagenes = (foto, index) => {
-        //console.log(foto)
-        if (index === 0) {
-            //console.log('Entra en index 1');
-            return <div className="carousel-item active" key={index} >
-                <img key={index} className="w-100" src={foto.foto} alt="" />
+    const imagenes = (name, index) => {
+        if (name === 'undefine' || name === null || !name) {
+            //si es que el name no existe
+            return <div style={{ height: `40vh`, display: `flex`, justifyContent: `center` }} className="carousel-item active" key={index} >
+                <img className="img-fluid" key={index} style={{ height: `100%` }} src={require('../componentes/img/sinfoto.jpg')} alt=".." />
             </div>
         } else {
-            //console.log('Entra en index !1');
-            return <div className="carousel-item" key={index} >
-                <img key={index} className="w-100" src={foto.foto} alt="" />
-            </div>
+            return <Carousel.Item >
+                <div style={{ height: `40vh`, display: `flex`, justifyContent: `center` }} key={index} >
+                    <img key={index} src={'http://186.158.152.141:4002/' + name} alt=".." />
+                </div>
+            </Carousel.Item>
+
         }
     }
 
     return (
         <div>
-            <section className="bg-success py-5">
+            <section className="py-5" >
                 <div className="container">
-                    <div className="col-md-8 text-white">
-                        <h1>Catalogo</h1>
+                    <div className="col-md-8 text-success">
+                        <h1>Catálogo</h1>
                     </div>
-                    {catalogo()}
+                    {nuevoRegistro()}
+                    {
+                        detalle === true ?
+                            <DetallePropiedad onchangeDetalle={onchangeDetalle} propiedad={propiedad} /> :
+                            catalogo()
+                    }
                 </div>
             </section>
         </div>
-
     )
 }
 
-
-export default withNamespaces()(Market);
+export default withNamespaces()(Catalogo);

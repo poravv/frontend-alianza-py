@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Alert from 'react-bootstrap/Alert';
 import { deletePhF, getPhFId } from '../../services/PropiedadHFotos';
 
-const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
-    //console.log(propiedad)
+const Fotos = ({ t, token, propiedad, prevTab }) => {
+
     const idpropiedad = propiedad?.idpropiedad ?? 0;
     const [show, setShow] = useState(false);
     const [mensaje, setMensaje] = useState(false);
@@ -27,7 +27,7 @@ const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
     }, [updated])
 
     const getListaFotos = () => {
-        console.log('idpropiedad: ', idpropiedad)
+        //console.log('idpropiedad: ', idpropiedad)
         getPhFId({ token: token, idpropiedad: idpropiedad }).then((fotos) => {
             console.log(fotos)
             if (fotos !== null) {
@@ -36,17 +36,17 @@ const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
         })
     }
 
-    const modalHandler = (e,image,idfotos) => {
-        e.preventDefault()
+    const modalHandler = (e, image, idfotos) => {
+        e.preventDefault();
         setModalOpen(true)
         setCurrentImage(image)
         setCurrentId(idfotos)
     }
 
-    const handleDelete = async (e,idfotos,currentImage) =>{
+    const handleDelete = async (e, idfotos, currentImage) => {
         e.preventDefault();
-        await deletePhF({token:token,idfotos:idfotos,name:currentImage}).then((rs) => {
-            console.log(rs)
+        await deletePhF({ token: token, idfotos: idfotos, name: currentImage }).then((rs) => {
+            //console.log(rs)
             setUpdated(true)
             setModalOpen(false)
         })
@@ -58,18 +58,15 @@ const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
 
     const sendHandler = async () => {
         if (!file) {
-            alert('you must upload file')
+            alert('Favor seleccione una imagen')
             return
         }
-
         const formdata = new FormData()
         formdata.append('image', file);
 
-
-
         try {
             await createFotos({ json: formdata, token, idpropiedad: idpropiedad }).then((resultado) => {
-                console.log('res: ', resultado);
+                //console.log('res: ', resultado);
                 if (resultado?.mensaje === 'error') {
                     setMensaje(resultado?.detmensaje)
                     setShow(true)
@@ -107,7 +104,9 @@ const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
 
     const save = (e) => {
         e.preventDefault();
-        navegacion('/home')
+        navegacion('/home');
+        // eslint-disable-next-line
+        window.location.href = window.location.href;
     }
 
     function navegacion(direccion) {
@@ -120,7 +119,6 @@ const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
                 id='formFotos'
                 className='mt-4'
             >
-
                 <div className="container mt-5">
                     <div className="card p-3">
                         <div className="row">
@@ -134,22 +132,22 @@ const Fotos = ({ t, token, propiedad, nextTab, prevTab, clienteIn }) => {
                     </div>
                     <div className='container mt-5' style={{ display: `flex`, flexWrap: `wrap` }}>
                         {imageList ?
-                            imageList.map((image) => {
-                                //console.log(imageList)
-                                return <div className='card m-2'>
-                                    <img src={'http://186.158.152.141:4002/' + image?.Fotos_propiedad?.name} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
+                            imageList.map((image,index) => { 
+                                //console.log(image)
+                                return <div className='card m-2' key={index}>
+                                    <img src={'http://186.158.152.141:4002/' + image?.fotos_propiedads[0]?.name} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
                                     <div>
-                                        <button onClick={(e) => modalHandler(e,image?.Fotos_propiedad?.name, image?.Fotos_propiedad?.idfotos)} className='btn btn-dark'>View</button>
+                                        <button onClick={(e) => modalHandler(e, image?.fotos_propiedads[0]?.name, image?.fotos_propiedads[0]?.idfotos)} className='btn btn-dark'>View</button>
                                     </div>
                                 </div>
                             }) : null}
                     </div>
                 </div>
-                <Modal style={{content:{right:`20%`,left:`20%`}}} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
+                <Modal style={{ content: { right: `20%`, left: `20%` } }} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
                     <div className='card m-2'>
                         <img src={'http://186.158.152.141:4002/' + currentImage} alt='...' className='card-img-top' />
                         <div>
-                            <button onClick={(e)=> handleDelete(e,currentId,currentImage)} className='btn btn-dark'>Delete</button>
+                            <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark'>Delete</button>
                         </div>
                     </div>
                 </Modal>

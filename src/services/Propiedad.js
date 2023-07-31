@@ -14,7 +14,7 @@ export const getPropiedad = async ({token,param}) => {
     return data;
 };
 
-export const getVwPropiedad = async ({token,idusuario}) => {
+export const getVwPropiedad = async ({token,idvendedor}) => {
     //CONFIGURACION DE TOKEN
     const config = {
         headers: {
@@ -22,8 +22,28 @@ export const getVwPropiedad = async ({token,idusuario}) => {
         }
     };
     //const { data } = await axios.get(baseURL, credentials);
-    const { data } = await axios.get(`${baseURL}/getview/${idusuario}`, config)
+    const { data } = await axios.get(`${baseURL}/getview/${idvendedor}`, config)
     //console.log(data)
+    return data;
+};
+
+export const getVwPropiedadTT = async () => {
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.get(`${baseURL}/getviewtt/`)
+    //console.log(data)
+    return data;
+};
+
+
+export const getPropiedadId = async ({token,idprodpiedad}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.get(`${baseURL}/get/${idprodpiedad}`, config)
     return data;
 };
 

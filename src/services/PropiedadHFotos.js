@@ -14,6 +14,8 @@ export const getPhF = async ({token,param}) => {
     return data;
 };
 
+
+
 export const getPhFId = async ({token,idpropiedad}) => {
     //CONFIGURACION DE TOKEN
     const config = {

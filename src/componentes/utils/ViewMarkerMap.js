@@ -1,39 +1,38 @@
-import { useMemo, useState } from "react";
+import { useMemo,useState,useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
 
-export default function MarkerMap({setLat,setLong,lat,long}) {
+export default function ViewMarkerMap({propiedad}) {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_KEYMAP,
     });
     if (!isLoaded) return <div>Loading...</div>;
-    return <Map setLat={setLat} setLong={setLong} inlat={lat} inlong={long} />;
+    return <Map propiedad={propiedad} />;
 }
 
-function Map({setLat,setLong,inlat,inlong}) {
-    //console.log(inlat,inlong,parseFloat(inlat),parseFloat(inlong))
+function Map({propiedad}) {
+
     let defaultMap;
-    if(inlat&&inlong){
-        defaultMap ={ lat: parseFloat(inlat), lng: parseFloat(inlong) }
+    if(propiedad){
+        defaultMap ={ lat: parseFloat(propiedad.lat), lng: parseFloat(propiedad.long) }
     }else{
         defaultMap= { lat: -25.343571, lng:-57.481203 }
     }
     // eslint-disable-next-line
     const center = useMemo(() => (defaultMap), []);
-    
     const [markers, setMarkers] = useState([center]);
     const [selectedMarker, setSelectedMarker] = useState(null);
 
-    const handleMapClick = (event) => {
+    useEffect(() => {
         const newMarker = {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-            title: "Mi ubicacion",
-            description: "Asegure que la ubicacion sea correcta"
+            lat: parseFloat(propiedad.lat),
+            lng: parseFloat(propiedad.long),
+            title: propiedad?.titulo,
+            description: propiedad?.descripcion
         };
-        setLat(event.latLng.lat())
-        setLong(event.latLng.lng())
+        
         setMarkers([newMarker]);
-    };
+        // eslint-disable-next-line
+    }, []);
 
     const handleMarkerClick = (marker) => {
         setSelectedMarker(marker);
@@ -50,7 +49,7 @@ function Map({setLat,setLong,inlat,inlong}) {
                 mapTypeControl: false,
                 fullscreenControl: false,
             }}
-            onClick={handleMapClick}
+            //onClick={handleMapClick}
         >
             {markers.map((marker, index) => (
                 <MarkerF
@@ -63,8 +62,8 @@ function Map({setLat,setLong,inlat,inlong}) {
                         <InfoWindowF
                             onCloseClick={() => setSelectedMarker(null)}
                         >
-                            <div>
-                                <h3>{marker.title}</h3>
+                            <div style={{ margin:`14px` }}>
+                                <p>{marker.title}</p>
                                 <p>{marker.description}</p>
                             </div>
                         </InfoWindowF>
@@ -74,15 +73,3 @@ function Map({setLat,setLong,inlat,inlong}) {
         </GoogleMap>
     );
 }
-/*
-{markers.map((marker, index) => (
-                <MarkerF 
-                    key={index}
-                    position={marker}
-                    //icon={{url: (require('../img/logo2.jpeg')),fillColor: '#EB00FF',scale: 1,width:`5px`}} 
-                    //label={'Test'}
-                >
-                    <span>{`texto`}</span>
-                </MarkerF>
-            ))}
-*/

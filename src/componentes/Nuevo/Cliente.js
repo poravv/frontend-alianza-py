@@ -4,8 +4,8 @@ import { createCliente, updateCliente } from '../../services/Cliente';
 
 import Alert from 'react-bootstrap/Alert';
 
-const Cliente = ({ t, token, persona, nextTab, prevTab, clienteIn }) => {
-    console.log(clienteIn)
+const Cliente = ({ t, token, persona, nextTab, prevTab, clienteIn,setCliente }) => {
+    //console.log(clienteIn)
     const idpersona = persona?.idpersona ?? 0;
     const idcliente = clienteIn?.idcliente ?? 0;
     const [categoria, setCategoria] = useState(clienteIn?.categoria ?? '');
@@ -28,14 +28,16 @@ const Cliente = ({ t, token, persona, nextTab, prevTab, clienteIn }) => {
                 categoria: categoria,
                 estado: 'AC'
             }
+            console.log('Entra a crear')
             try {
                 await createCliente({ json, token: token }).then((resultado) => {
-                    //console.log('res: ', resultado);
+                    console.log('res: ', resultado);
                     if (resultado?.mensaje === 'error') {
                         setMensaje(resultado?.detmensaje)
                         setShow(true)
                         return;
                     }
+                    setCliente(resultado?.body)
                     //El evento que vuelve a la pagina de Nuevo
                     nextTab(e, 'propiedad');
                 });
@@ -56,12 +58,13 @@ const Cliente = ({ t, token, persona, nextTab, prevTab, clienteIn }) => {
             }
             try {
                 await updateCliente({ json, token: token,idcliente:idcliente }).then((resultado) => {
-                    //console.log('res: ', resultado);
+                    console.log('res: ', resultado);
                     if (resultado?.mensaje === 'error') {
                         setMensaje(resultado?.detmensaje)
                         setShow(true)
                         return;
                     }
+                    //setCliente(resultado?.body)
                     //El evento que vuelve a la pagina de Nuevo
                     nextTab(e, 'propiedad');
                 });

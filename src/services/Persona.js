@@ -14,6 +14,18 @@ export const getPersona = async ({token,param}) => {
     return data;
 };
 
+export const getPhotoPerfil = async ({token,idpersona}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.get(`${baseURL}/get/${idpersona}`, config)
+    return data;
+};
+
 export const getPersonaDocumento = async ({token,documento}) => {
     //CONFIGURACION DE TOKEN
     const config = {

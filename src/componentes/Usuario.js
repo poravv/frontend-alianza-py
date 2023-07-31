@@ -8,11 +8,18 @@ import MapaGoogle from './utils/MarkerMap';
 import { Logout } from '../services/Login';
 import Alert from 'react-bootstrap/Alert';
 
+import { createFotos } from '../services/Fotos';
+import Modal from 'react-modal'
+import { deletePhF } from '../services/PropiedadHFotos';
+import { getPhotoPerfil } from '../services/Persona';
+
+
 
 const Usuario = ({ t, ciudades, usuario, token }) => {
     console.log(usuario)
     const [editar, setEditar] = useState(true);
     const idusuario = usuario?.idusuario ?? 0;
+    const nivel = usuario?.nivel ?? 3;
     const idpersona = usuario?.persona.idpersona ?? 0;
     const [first_name, setFirstName] = useState(usuario?.persona.nombre ?? '');
     const [last_name, setLastName] = useState(usuario?.persona.apellido ?? '');
@@ -34,12 +41,22 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [mensaje, setMensaje] = useState(false);
+    //Datos para perfil
+    const [file, setFile] = useState(null)
+    const [perfil, setPerfil] = useState(usuario?.persona?.photo??null);
+    const [updated, setUpdated] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentImage, setCurrentImage] = useState(null);
+    const [currentId, setCurrentId] = useState(null);
 
     useEffect(() => {
         if (!usuario) { navegacion('/home') }
         init();
+        Modal.setAppElement('body')
+        getPerfil();
+        setUpdated(false)
         // eslint-disable-next-line
-    }, []);
+    }, [updated]);
 
     function navegacion(direccion) {
         navigate(direccion);
@@ -74,7 +91,7 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
         const json = {
             usuario: {
                 //idpersona: idpersona,
-                nivel: 3,
+                nivel: nivel,
                 estado: "AC",
                 correo: email,
                 usuario: email,
@@ -204,12 +221,6 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
                         <label className="form-label" htmlFor="form3Example4">*{t('identify.phone')}</label>
                     </div>
                 </div>
-                <div className="col-md-6 mb-4">
-                    <div className="form-outline mb-4">
-                        <input type="password" id="form3Example5" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="on" disabled={editar} />
-                        <label className="form-label" htmlFor="form3Example5">*Contraseña anterior</label>
-                    </div>
-                </div>
             </div>
             <div className="row">
                 <div className="col-md-6 mb-4">
@@ -242,6 +253,7 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
                             </div> : null
                     }
                 </div>
+
                 <div className="col-md-6 mb-4">
                     {
                         barrios ?
@@ -297,6 +309,49 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
                         <label className="form-label" htmlFor="sexo">Sexo</label>
                     </div>
                 </div>
+                <div className="col-md-6 mb-4">
+                    <div className="form-outline mb-4">
+                        <input type="password" id="form3Example5" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="on" disabled={editar} />
+                        <label className="form-label" htmlFor="form3Example5">*Contraseña actual</label>
+                    </div>
+                </div>
+            </div>
+            <div
+                className='mt-4'
+            >
+                <div className="container mt-5">
+                    <div className="card p-3">
+                        <div className="row">
+                            <div className="col-10">
+                                <input id="fileinput" onChange={selectedHandler} className="form-control" type="file" />
+                            </div>
+                            <div className="col-2">
+                                <button onClick={sendHandler} type="button" className="btn btn-primary col-12">Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='container mt-5' style={{ display: `flex`, flexWrap: `wrap` }}>
+                        {perfil ?
+                            <div className='card m-2' key={1}>
+                            <img src={'http://186.158.152.141:4002/' + perfil?.photo} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
+                            <div>
+                                <button onClick={(e) => modalHandler(e, perfil?.photo, perfil?.idpersona)} className='btn btn-dark'>View</button>
+                            </div>
+                        </div> : <img src={require('../componentes/img/sinfoto.jpg')} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />} 
+                    </div>
+                </div>
+                <Modal style={{ content: { right: `20%`, left: `20%` } }} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
+                    <div className='card m-2'>
+                        <img src={'http://186.158.152.141:4002/' + currentImage} alt='...' className='card-img-top' />
+                        <div>
+                            <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark'>Delete</button>
+                        </div>
+                    </div>
+                </Modal>
+
+                <div className='row mt-5'>
+                    {mensajeAlerta()}
+                </div>
             </div>
             <div className="row">
                 <MapaGoogle setLat={setLat} setLong={setLong} lat={lat} long={long} />
@@ -312,6 +367,73 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
         </form>
     }
 
+
+    const modalHandler = (e, image, idfotos) => {
+        e.preventDefault()
+        setModalOpen(true)
+        setCurrentImage(image)
+        setCurrentId(idfotos)
+    }
+
+    const handleDelete = async (e, idfotos, currentImage) => {
+        e.preventDefault();
+        await deletePhF({ token: token, idfotos: idfotos, name: currentImage }).then((rs) => {
+            console.log(rs)
+            setUpdated(true)
+            setModalOpen(false)
+        })
+    }
+
+
+    const sendHandler = async () => {
+        if (!file) {
+            alert('Favor seleccione una imagen')
+            return
+        }
+        const formdata = new FormData()
+        formdata.append('image', file);
+
+        try {
+            await createFotos({ json: formdata, token, idpersona: idpersona }).then((resultado) => {
+                console.log('res: ', resultado);
+                if (resultado?.mensaje === 'error') {
+                    setMensaje(resultado?.detmensaje)
+                    setShow(true)
+                    return;
+                }
+                setUpdated(true)
+
+                //El evento que vuelve a la pagina de Nuevo
+
+            });
+        } catch (error) {
+            //console.log('error', error?.response?.data)
+            if (error?.mensaje === 'error') {
+                setMensaje(error?.detmensaje)
+                setShow(true)
+                return;
+            }
+        }
+
+        document.getElementById('fileinput').value = null
+
+        setFile(null)
+    }
+
+    const getPerfil = () => {
+        //console.log('idpropiedad: ', idpropiedad)
+        getPhotoPerfil({ token: token, idpersona: idpersona }).then((personaFoto) => {
+            console.log('Foto',personaFoto.body)
+            if (personaFoto?.body?.photo !== null) {
+                setPerfil(personaFoto?.body)
+            }
+        })
+    }
+
+    const selectedHandler = e => {
+        setFile(e.target.files[0])
+    }
+
     return (
         <div>
             <section className="background-radial-gradient overflow-hidden">
@@ -324,5 +446,6 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
         </div>
     );
 }
+
 
 export default withNamespaces()(Usuario)

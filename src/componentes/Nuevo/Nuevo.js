@@ -28,7 +28,6 @@ const Nuevo = ({ t, ciudades, usuario, tipoPropiedad, token }) => {
     const [show, setShow] = useState(false);
     const [mensaje, setMensaje] = useState(false);
 
-
     useEffect(() => {
         if (!usuario) { navegacion('/home') }
         if (usuario?.nivel === '3') { navegacion('/home') }
@@ -197,6 +196,7 @@ const Nuevo = ({ t, ciudades, usuario, tipoPropiedad, token }) => {
                                                 textoButton={'Siguiente'}
                                                 nextTab={nextTab}
                                                 prevTab={prevTab}
+                                                setCliente={setCliente}
                                                 persona={persona}
                                                 token={token}
                                                 clienteIn={cliente}
@@ -212,8 +212,8 @@ const Nuevo = ({ t, ciudades, usuario, tipoPropiedad, token }) => {
                                             <Propiedad 
                                                 token={token} 
                                                 tipoPropiedad={tipoPropiedad} 
-                                                prevTab={prevTab} 
-                                                personaIn={persona} 
+                                                prevTab={prevTab}
+                                                personaIn={persona}
                                                 propiedad={propiedad}
                                                 cliente={cliente}
                                                 ciudades={ciudades}
@@ -227,12 +227,7 @@ const Nuevo = ({ t, ciudades, usuario, tipoPropiedad, token }) => {
                                             <Fotos
                                                 ciudades={ciudades}
                                                 token={token}
-                                                onchangePersona={setPersona}
-                                                persona={persona}
-                                                usuario={usuario}
                                                 propiedad={propiedad}
-                                                textoButton={'Siguiente'}
-                                                nextTab={nextTab}
                                                 prevTab={prevTab}
                                             />
                                             : null}

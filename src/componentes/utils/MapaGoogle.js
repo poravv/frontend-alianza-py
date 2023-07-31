@@ -68,7 +68,7 @@ function Map() {
                 <MarkerF 
                     key={index}
                     position={marker}
-                    //icon={{url: (require('../img/logo1.jpeg')),fillColor: '#EB00FF',scale: 1,width:`5px`}} 
+                    //icon={{url: (require('../img/logo2.jpeg')),fillColor: '#EB00FF',scale: 1,width:`5px`}} 
                     //label={'Test'}
                 >
                     <span>{`texto`}</span>

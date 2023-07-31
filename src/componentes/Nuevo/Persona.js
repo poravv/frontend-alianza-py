@@ -95,7 +95,7 @@ const Persona = ({ t, ciudades, token, onchangePersona, persona, usuario, nextTa
                         return;
                     }
                     //El evento que vuelve a la pagina de Nuevo
-                    onchangePersona(resultado.body)
+                    onchangePersona(resultado?.body)
                     nextTab(e,'cliente');
                 });
             } else {
@@ -108,13 +108,13 @@ const Persona = ({ t, ciudades, token, onchangePersona, persona, usuario, nextTa
                     }
                     //El evento que vuelve a la pagina de Nuevo
                     //No se carga persona ya que actualizar no retorna datos de persona
-                    //onchangePersona(resultado.body)
+                    onchangePersona(resultado?.body)
                     nextTab(e,'cliente');
                 });
             }
         } catch (error) {
-            console.log('error', error.response.data)
-            setMensaje(error.response.data)
+            console.log('error', error)
+            setMensaje(error)
             setShow(true)
             return;
         }
@@ -216,8 +216,8 @@ const Persona = ({ t, ciudades, token, onchangePersona, persona, usuario, nextTa
                                     <select id='barrio_persona' className="form-select" defaultValue={idbarrio ?? '0'} defaultChecked={idbarrio ?? 0} onChange={(e) => onchangeBarrio(e.target.value)}  >
                                         <option key={0} value={'0'} >{t('common.selected')}</option>
                                         {barrios.map((barrio, index) => (
-                                            <option key={index} value={barrio.idbarrio}>
-                                                {barrio.descripcion}
+                                            <option key={index} value={barrio?.idbarrio}>
+                                                {barrio?.descripcion}
                                             </option>
                                         ))}
                                     </select>

@@ -1,31 +1,33 @@
 import { withNamespaces } from 'react-i18next';
 import { useState, useEffect } from 'react'
 import { getBarrioCiudad } from '../../services/Barrio';
-import { createPropiedad } from '../../services/Propiedad';
+import { createPropiedad, updatePropiedad } from '../../services/Propiedad';
 import MapaGoogle from '../utils/MarkerMap';
 import Alert from 'react-bootstrap/Alert';
 
-const Propiedad = ({ t, ciudades, personaIn,setPropiedad, token, cliente, usuario,nextTab, prevTab, tipoPropiedad }) => {
-    const idusuario = usuario?.idusuario ?? 0;
+const Propiedad = ({ t, ciudades, personaIn, setPropiedad, token, cliente, usuario, nextTab, prevTab, tipoPropiedad, propiedad }) => {
+    //console.log(propiedad.barrio);
+    const [barrios, setBarrios] = useState([propiedad?.barrio ?? null]);
+    const idvendedor = usuario?.vendedor.idvendedor ?? 0;
     const idcliente = cliente?.idcliente ?? 0;
-    const [titulo, setTitulo] = useState('');
+    const idpropiedad = propiedad?.idpropiedad ?? 0;
+    const [titulo, setTitulo] = useState(propiedad?.titulo ?? '');
     const persona = personaIn?.nombre ? `${personaIn.nombre} ${personaIn.apellido}` : '';
-    const [descripcion, setDescripcion] = useState('');
-    const [direccion, setDireccion] = useState([]);
-    const [superficie_terreno, setSuperficieTerreno] = useState('');
-    const [area_construida, setAreaConstruida] = useState('');
-    const [precio, setPrecio] = useState(0);
-    const [dimencion, setDimencion] = useState('');
-    const [metros_c, setMetrosC] = useState('');
-    const [lat, setLat] = useState('');
-    const [long, setLong] = useState('');
-    const [idtipo_propiedad, setTipoPropiedad] = useState('');
-    const [idciudad, setIdciudad] = useState('');
-    const [idbarrio, setIdbarrio] = useState('');
-    const [contacto_extra, setContactoExtra] = useState('');
-    const [dormitorio, setDormitorio] = useState(0);
+    const [descripcion, setDescripcion] = useState(propiedad?.descripcion ?? '');
+    const [direccion, setDireccion] = useState(propiedad?.direccion ?? '');
+    const [superficie_terreno, setSuperficieTerreno] = useState(propiedad?.superficie_terreno ?? '');
+    const [area_construida, setAreaConstruida] = useState(propiedad?.area_construida ?? '');
+    const [precio, setPrecio] = useState(propiedad?.precio ?? 0);
+    const [dimencion, setDimencion] = useState(propiedad?.dimencion ?? '');
+    const [metros_c, setMetrosC] = useState(propiedad?.metros_c ?? '');
+    const [lat, setLat] = useState(propiedad?.lat ?? '');
+    const [long, setLong] = useState(propiedad?.long ?? '');
+    const [idtipo_propiedad, setTipoPropiedad] = useState(propiedad?.idtipo_propiedad ?? '');
+    const [idciudad, setIdciudad] = useState(propiedad?.barrio?.idciudad ?? '');
+    const [idbarrio, setIdbarrio] = useState(propiedad?.idbarrio ?? '');
+    const [contacto_extra, setContactoExtra] = useState(propiedad?.contacto_extra ?? '');
+    const [dormitorio, setDormitorio] = useState(propiedad?.dormitorio ?? 0);
     const [show, setShow] = useState(false);
-    const [barrios, setBarrios] = useState([]);
     const [mensaje, setMensaje] = useState(false);
 
     const getLstBarrios = async (idciudad) => {
@@ -65,38 +67,57 @@ const Propiedad = ({ t, ciudades, personaIn,setPropiedad, token, cliente, usuari
         };
         //console.log(superficie_terreno);
         const json = {
-                titulo: titulo,
-                descripcion: descripcion,
-                area_construida: area_construida,
-                superficie_terreno:superficie_terreno,
-                dimencion:dimencion,
-                metros_c:metros_c,
-                precio: precio,
-                long: long.toString(),
-                lat: lat.toString(),
-                idbarrio: idbarrio,
-                direccion: direccion,
-                idusuario: idusuario,
-                idcliente:idcliente,
-                dormitorio:dormitorio,
-                contacto_extra:contacto_extra,
-                idtipo_propiedad: idtipo_propiedad,
-                estado:'AC'
+            idpropiedad: idpropiedad,
+            titulo: titulo,
+            descripcion: descripcion,
+            area_construida: area_construida,
+            superficie_terreno: superficie_terreno,
+            dimencion: dimencion,
+            metros_c: metros_c,
+            precio: precio,
+            long: long.toString(),
+            lat: lat.toString(),
+            idbarrio: idbarrio,
+            direccion: direccion,
+            idvendedor: idvendedor,
+            idcliente: idcliente,
+            dormitorio: dormitorio,
+            contacto_extra: contacto_extra,
+            idtipo_propiedad: idtipo_propiedad,
+            estado: 'AC'
         }
         console.log(json);
         try {
-            await createPropiedad({ json,token }).then((resultado) => {
-                console.log('res: ', resultado)
-                setPropiedad(resultado.body)
-                nextTab(e, 'fotos');
-                
-            });
+            if (idpropiedad === 0) {
+                await createPropiedad({ json, token }).then((resultado) => {
+                    console.log('res: ', resultado)
+
+                    if (resultado?.mensaje === 'error') {
+                        console.log('entra en error')
+                        setMensaje(resultado?.detmensaje)
+                        setShow(true)
+                        return;
+                    }
+                    setPropiedad(resultado?.body)
+                    nextTab(e, 'fotos');
+
+                });
+            } else {
+                await updatePropiedad({ json, token, param: idpropiedad }).then((resultado) => {
+                    console.log('res: ', resultado)
+                    if (resultado?.mensaje === 'error') {
+                        setMensaje(resultado?.detmensaje)
+                        setShow(true)
+                        return;
+                    }
+                    setPropiedad(resultado?.body)
+                    nextTab(e, 'fotos');
+                });
+            }
         } catch (error) {
             console.log('error', error.response.data)
         }
     }
-
-
 
     const onchangeCiudad = async (value) => {
         setIdciudad(value);
@@ -107,10 +128,9 @@ const Propiedad = ({ t, ciudades, personaIn,setPropiedad, token, cliente, usuari
         setIdbarrio(value);
     }
 
-
     return (
         <>
-            <form 
+            <form
                 id='formulario'
                 className='mt-4'>
                 <div className="row">
@@ -182,7 +202,7 @@ const Propiedad = ({ t, ciudades, personaIn,setPropiedad, token, cliente, usuari
                     <div className="col-md-6 mb-4">
                         <div className="form-outline mb-4">
                             <input type="text" id="dim" className="form-control" value={dimencion} onChange={(e) => setDimencion(e.target.value)} required autoComplete="on" />
-                            <label className="form-label" htmlFor="dim">*{'Dimencion'}</label>
+                            <label className="form-label" htmlFor="dim">*{'Dimension'}</label>
                         </div>
                     </div>
                 </div>
@@ -215,15 +235,14 @@ const Propiedad = ({ t, ciudades, personaIn,setPropiedad, token, cliente, usuari
                         {
                             barrios ?
                                 <div className="form-outline mb-4">
-                                    <select id='barrio' className="form-select" defaultValue={idbarrio ?? '0'} defaultChecked={idbarrio ?? 0} onChange={(e) => onchangeBarrio(e.target.value)} >
+                                    <select id='barrio_persona' className="form-select" defaultValue={idbarrio ?? '0'} defaultChecked={idbarrio ?? 0} onChange={(e) => onchangeBarrio(e.target.value)}  >
                                         <option key={0} value={'0'} >{t('common.selected')}</option>
                                         {barrios.map((barrio, index) => (
-                                            <option key={index} value={barrio.idbarrio}>
-                                                {barrio.descripcion}
+                                            <option key={index} value={barrio?.idbarrio}>
+                                                {barrio?.descripcion}
                                             </option>
                                         ))}
                                     </select>
-                                    <label className="form-label" htmlFor="barrio">*{t('identify.district')}</label>
                                 </div> : null
                         }
                     </div>
