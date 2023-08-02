@@ -7,13 +7,8 @@ import { NACIONALIDAD } from './utils/Nacionalidades'
 import MapaGoogle from './utils/MarkerMap';
 import { Logout } from '../services/Login';
 import Alert from 'react-bootstrap/Alert';
-
-import { createFotos } from '../services/Fotos';
 import Modal from 'react-modal'
-import { deletePhF } from '../services/PropiedadHFotos';
-import { getPhotoPerfil } from '../services/Persona';
-
-
+import { deletePerfil, getPhotoPerfil, updatePerfil } from '../services/Persona';
 
 const Usuario = ({ t, ciudades, usuario, token }) => {
     console.log(usuario)
@@ -43,7 +38,7 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
     const [mensaje, setMensaje] = useState(false);
     //Datos para perfil
     const [file, setFile] = useState(null)
-    const [perfil, setPerfil] = useState(usuario?.persona?.photo??null);
+    const [perfil, setPerfil] = useState(usuario?.persona?.photo ?? null);
     const [updated, setUpdated] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [currentImage, setCurrentImage] = useState(null);
@@ -330,21 +325,21 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
                             </div>
                         </div>
                     </div>
-                    <div className='container mt-5' style={{ display: `flex`, flexWrap: `wrap` }}>
-                        {perfil ?
-                            <div className='card m-2' key={1}>
-                            <img src={'http://186.158.152.141:4002/' + perfil?.photo} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
-                            <div>
-                                <button onClick={(e) => modalHandler(e, perfil?.photo, perfil?.idpersona)} className='btn btn-dark'>View</button>
-                            </div>
-                        </div> : <img src={require('../componentes/img/sinfoto.jpg')} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />} 
+                    <div className='mt-5' style={{ display: `flex`, flexWrap: `wrap`, justifyContent:`center` }}>
+                        {(perfil&&perfil!=null&&perfil.photo!==null) ?
+                            <div className='m-2' key={1}>
+                                <img src={'http://186.158.152.141:4002/' + perfil?.photo} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
+                                <div>
+                                    <button onClick={(e) => modalHandler(e, perfil?.photo, perfil?.idpersona)} className='btn btn-dark my-2'>Ver</button>
+                                </div>
+                            </div> : <img src={require('../componentes/img/sinfoto.jpg')} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />}
                     </div>
                 </div>
                 <Modal style={{ content: { right: `20%`, left: `20%` } }} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
-                    <div className='card m-2'>
+                    <div className='m-2'>
                         <img src={'http://186.158.152.141:4002/' + currentImage} alt='...' className='card-img-top' />
                         <div>
-                            <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark'>Delete</button>
+                            <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark my-2'>Borrar</button>
                         </div>
                     </div>
                 </Modal>
@@ -368,20 +363,21 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
     }
 
 
-    const modalHandler = (e, image, idfotos) => {
+    const modalHandler = (e, image, idpersona) => {
         e.preventDefault()
         setModalOpen(true)
         setCurrentImage(image)
-        setCurrentId(idfotos)
+        setCurrentId(idpersona)
     }
 
-    const handleDelete = async (e, idfotos, currentImage) => {
+    const handleDelete = async (e, idpersona, currentImage) => {
         e.preventDefault();
-        await deletePhF({ token: token, idfotos: idfotos, name: currentImage }).then((rs) => {
-            console.log(rs)
+        await deletePerfil({ token: token, idpersona: idpersona, name: currentImage }).then((rs) => {
+            setPerfil(rs.body)
             setUpdated(true)
             setModalOpen(false)
         })
+
     }
 
 
@@ -392,9 +388,8 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
         }
         const formdata = new FormData()
         formdata.append('image', file);
-
         try {
-            await createFotos({ json: formdata, token, idpersona: idpersona }).then((resultado) => {
+            await updatePerfil({ json: formdata, token, idpersona: idpersona }).then((resultado) => {
                 console.log('res: ', resultado);
                 if (resultado?.mensaje === 'error') {
                     setMensaje(resultado?.detmensaje)
@@ -402,9 +397,7 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
                     return;
                 }
                 setUpdated(true)
-
                 //El evento que vuelve a la pagina de Nuevo
-
             });
         } catch (error) {
             //console.log('error', error?.response?.data)
@@ -414,16 +407,14 @@ const Usuario = ({ t, ciudades, usuario, token }) => {
                 return;
             }
         }
-
         document.getElementById('fileinput').value = null
-
         setFile(null)
     }
 
     const getPerfil = () => {
         //console.log('idpropiedad: ', idpropiedad)
         getPhotoPerfil({ token: token, idpersona: idpersona }).then((personaFoto) => {
-            console.log('Foto',personaFoto.body)
+            console.log('Foto', personaFoto.body)
             if (personaFoto?.body?.photo !== null) {
                 setPerfil(personaFoto?.body)
             }

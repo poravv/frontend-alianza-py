@@ -2,6 +2,7 @@ import { useMemo,useState,useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
 
 export default function ViewMarkerMap({propiedad}) {
+    console.log(propiedad)
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_KEYMAP,
     });
@@ -13,7 +14,7 @@ function Map({propiedad}) {
 
     let defaultMap;
     if(propiedad){
-        defaultMap ={ lat: parseFloat(propiedad.lat), lng: parseFloat(propiedad.long) }
+        defaultMap ={ lat: parseFloat(propiedad?.lat), lng: parseFloat(propiedad?.long) }
     }else{
         defaultMap= { lat: -25.343571, lng:-57.481203 }
     }
@@ -24,8 +25,8 @@ function Map({propiedad}) {
 
     useEffect(() => {
         const newMarker = {
-            lat: parseFloat(propiedad.lat),
-            lng: parseFloat(propiedad.long),
+            lat: parseFloat(propiedad?.lat),
+            lng: parseFloat(propiedad?.long),
             title: propiedad?.titulo,
             description: propiedad?.descripcion
         };

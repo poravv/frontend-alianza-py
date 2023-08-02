@@ -6,10 +6,9 @@ import { NACIONALIDAD } from '../utils/Nacionalidades'
 import MapaGoogle from '../utils/MarkerMap';
 import Alert from 'react-bootstrap/Alert';
 
-const Persona = ({ t, ciudades, token, onchangePersona, persona, usuario, nextTab, prevTab }) => {
-    //console.log(usuario)
+const Persona = ({ t, ciudades, token, onchangePersona, persona, nextTab, prevTab }) => {
+    console.log(persona)
     const idpersona = persona?.idpersona ?? 0;
-    //const idusuario = usuario?.idusuario ?? 0;
     const [first_name, setFirstName] = useState(persona?.nombre ?? '');
     const [last_name, setLastName] = useState(persona?.apellido ?? '');
     const [barrios, setBarrios] = useState([persona?.barrio]);

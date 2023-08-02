@@ -46,7 +46,6 @@ const Fotos = ({ t, token, propiedad, prevTab }) => {
     const handleDelete = async (e, idfotos, currentImage) => {
         e.preventDefault();
         await deletePhF({ token: token, idfotos: idfotos, name: currentImage }).then((rs) => {
-            //console.log(rs)
             setUpdated(true)
             setModalOpen(false)
         })
@@ -134,24 +133,23 @@ const Fotos = ({ t, token, propiedad, prevTab }) => {
                         {imageList ?
                             imageList.map((image,index) => { 
                                 //console.log(image)
-                                return <div className='card m-2' key={index}>
+                                return <div className='m-2' key={index}>
                                     <img src={'http://186.158.152.141:4002/' + image?.fotos_propiedads[0]?.name} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
                                     <div>
-                                        <button onClick={(e) => modalHandler(e, image?.fotos_propiedads[0]?.name, image?.fotos_propiedads[0]?.idfotos)} className='btn btn-dark'>View</button>
+                                        <button onClick={(e) => modalHandler(e, image?.fotos_propiedads[0]?.name, image?.fotos_propiedads[0]?.idfotos)} className='btn btn-dark my-2'>Ver</button>
                                     </div>
                                 </div>
                             }) : null}
                     </div>
                 </div>
                 <Modal style={{ content: { right: `20%`, left: `20%` } }} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
-                    <div className='card m-2'>
+                    <div className='m-2'>
                         <img src={'http://186.158.152.141:4002/' + currentImage} alt='...' className='card-img-top' />
                         <div>
-                            <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark'>Delete</button>
+                            <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark my-2'>Borrar</button>
                         </div>
                     </div>
                 </Modal>
-
                 <div className='row mt-5'>
                     {mensajeAlerta()}
                 </div>

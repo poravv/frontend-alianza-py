@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { updatePropiedad } from "../services/Propiedad";
 import { Carousel } from "react-bootstrap";
 import { getLstMisPropiedades } from "./utils/Init";
@@ -17,10 +17,10 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
     useEffect(() => {
         getLstMisPropiedades({ setMiCatalogo, idvendedor: idvendedor, token: token });
         // eslint-disable-next-line
-      }, []);
-    
-    
-    
+    }, []);
+
+
+
 
     const handleClose = () => {
         setIdborrar(null)
@@ -39,15 +39,15 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
     function confirmDelete() {
         return <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Alerta</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+            <Modal.Body>Esta seguro que desea eliminar el registro?</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
-                    Close
+                    No
                 </Button>
                 <Button variant="primary" onClick={() => handleDelete()}>
-                    Save Changes
+                    Si
                 </Button>
             </Modal.Footer>
         </Modal>
@@ -81,8 +81,8 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
                 miCatalogo.map((row, index) => {
                     return <div
                         key={index}
-                        className="card m-1 shadow bg-white rounded"
-                        style={{ minWidth: `300px`, maxWidth: `500px` }}>
+                        className="card m-1 bg-white shadow rounded"
+                        style={{ minWidth: `400px`, maxWidth: `600px` }}>
                         <Carousel fade interval={90000}>
                             {
                                 row?.Propiedad_has_fotos.length !== 0 ?
@@ -97,7 +97,9 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
                         <div className="card-body">
                             <h5 className="card-titulo">{row.titulo}</h5>
                             <p className="card-text">{row.descripcion}</p>
-                            <p className="card-text">{row.estado}</p>
+                            <p className="card-text">{
+                            row.estado==='AC'? 'Activo': row.estado==='VE'?'Vendido': 'Inactivo'
+                            }</p>
                             <p className="card-text"><small className="text-muted">{row.precio}</small></p>
                             <div className="row">
                                 <div className="col">

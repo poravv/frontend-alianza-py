@@ -38,6 +38,29 @@ export const getPersonaDocumento = async ({token,documento}) => {
     return data;
 };
 
+export const updatePerfil = async ({token,idpersona,json}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.post(`${baseURL}/perfil/${idpersona}`,json, config)
+    return data;
+};
+
+export const deletePerfil = async ({token,idpersona,fileName}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.delete(`${baseURL}/perfil/${idpersona}/${fileName}`, config)
+    return data;
+};
 
 export const deletePersona  = async ({token,param}) => {
     //CONFIGURACION DE TOKEN

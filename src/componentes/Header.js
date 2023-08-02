@@ -77,7 +77,7 @@ const Header = ({ ciudades, dato, clearDato, setDato, categorias, usuario, tipoP
 
     var sectionStyle = {
         minWidth: "100%",
-        minHeight:`17em`,
+        minHeight: `17em`,
         backgroundSize: `cover`,
         backgroundColor: `rgb(30,30,30)`,
         backgroundBlendMode: `soft-light`,
@@ -86,9 +86,12 @@ const Header = ({ ciudades, dato, clearDato, setDato, categorias, usuario, tipoP
 
     const identidad = () => {
         if (usuario) {
-            return <a style={{ textDecoration: `none` }} href="#usuario" onClick={() => navegacion('/usuario')} ><i style={{ color: `white` }} className="fa-solid fa-user"></i></a>
+            return <a style={{ textDecoration: `none` }} href="#usuario" onClick={() => navegacion('/usuario')} >
+                {/*<i style={{ color: `white` }} className="fa-solid fa-user"></i>*/}
+                Usuario
+            </a>
         } else {
-            return <a style={{ textDecoration: `none` }} href="#!" onClick={initModalLogin} >{t('navbar.identify')}</a>
+            return <a style={{ textDecoration: `none` }} href="!#" onClick={initModalLogin} >{t('navbar.identify')}</a>
         }
     }
 
@@ -182,7 +185,7 @@ const Header = ({ ciudades, dato, clearDato, setDato, categorias, usuario, tipoP
         <div >
             <nav className="navbar navbar-expand-lg navbar-dark shadow"
                 style={sectionStyle}
-                >
+            >
                 <div className="container d-flex justify-content-between align-items-center">
                     <div >
                         <img style={{ width: `8rem` }} onClick={() => navegacion('/home')} src={require('../componentes/img/logo2.jpeg')} alt="Logo" />
@@ -190,9 +193,9 @@ const Header = ({ ciudades, dato, clearDato, setDato, categorias, usuario, tipoP
                     <button className="m-5 navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                    <div className="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
                         <div className="flex-fill">
-                            <ul className="mb-xxl-0 p-5 nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                            <ul className="p-0 nav navbar-nav d-flex justify-content-between mx-lg-auto">
                                 <li className="nav-item" >
                                     <NavLink style={{ textDecoration: `none` }} to={'/home'} >{t('navbar.home')}</NavLink>
                                 </li>
@@ -213,7 +216,7 @@ const Header = ({ ciudades, dato, clearDato, setDato, categorias, usuario, tipoP
                                     {identidad()}
                                 </li>
                             </ul>
-                            {location.pathname==='/market' ? buscador() : null}
+                            {location.pathname === '/market' ? buscador() : null}
                         </div>
                     </div>
                 </div>

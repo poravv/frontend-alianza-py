@@ -73,6 +73,12 @@ const Nuevo = ({ t, ciudades, usuario, tipoPropiedad, token }) => {
         e.preventDefault();
         setCurrentTab(tab);
 
+        if (tab === 'busqueda') {
+            setHCliente(false)
+            setHPersona(false)
+            setHPropiedad(false)
+            setPersona(null)
+        }
         if (tab === 'cliente') {
             setHCliente(true)
             setHPersona(false)

@@ -5,9 +5,7 @@ const baseURL = 'http://186.158.152.141:4002/alianza/api/phf';
 export const getPhF = async ({token,param}) => {
     //CONFIGURACION DE TOKEN
     const config = {
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
+        headers: {"Authorization": `Bearer ${token}`,}
     };
     //const { data } = await axios.get(baseURL, credentials);
     const { data } = await axios.get(`${baseURL}/get`, config)

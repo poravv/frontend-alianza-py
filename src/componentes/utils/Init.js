@@ -1,7 +1,7 @@
 
 import { getTipoPropiedad } from '../../services/TipoPropiedad';
 import { getCiudad } from '../../services/Ciudad';
-import { getVwPropiedad,getVwPropiedadTT } from "../../services/Propiedad";
+import { getListaDestacados, getVwPropiedad,getVwPropiedadTT } from "../../services/Propiedad";
 
 
 
@@ -54,3 +54,12 @@ export const init = async (setUserApp) => {
     }
 }
  
+export const getDestacados = async ({setDestacados,token}) => {
+  try {
+      const res = await getListaDestacados({token:token});
+      setDestacados(res.body);
+      //console.log(res.body)
+  } catch (e) {
+      console.log('error: ',e);
+  }
+}

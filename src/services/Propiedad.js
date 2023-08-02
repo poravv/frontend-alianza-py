@@ -47,6 +47,17 @@ export const getPropiedadId = async ({token,idprodpiedad}) => {
     return data;
 };
 
+export const getListaDestacados = async ({token}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    const { data } = await axios.get(`${baseURL}/getDestacados/`, config)
+    return data;
+};
+
 
 export const deletePropiedad  = async ({token,param}) => {
     //CONFIGURACION DE TOKEN

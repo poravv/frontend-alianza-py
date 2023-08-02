@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
 
 export default function ListViewMarkerMap({ markers }) {
+
     console.log(markers)
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_KEYMAP,
@@ -12,6 +14,10 @@ export default function ListViewMarkerMap({ markers }) {
 }
 
 function Map({ markers }) {
+    const navigate = useNavigate();
+    function navegacion(direccion) {
+        navigate(direccion);
+    }
     const defaultMap = { lat: -25.343571, lng: -57.481203 }
     // eslint-disable-next-line
     const center = useMemo(() => (defaultMap), []);
@@ -43,12 +49,13 @@ function Map({ markers }) {
                                 <MarkerF
                                     key={index}
                                     position={marker}
+                                    opacity={0.5}
                                     icon={{ 
-                                        url: require('../../componentes/img/logo2.png'),
+                                        url: (marker.estado==='AC'?require('../../componentes/img/logodispo.png'):require('../../componentes/img/logovendido.png')),
                                         //size:{height:40,width:40},
                                         scaledSize: {height:40,width:40},
                                         //anchor: [20,20]
-                                        //fillColor:'red'
+                                        //fillColor:'#EA2828',
                                  }}
                                     title={marker.title}
                                     onClick={() => handleMarkerClick(marker)}
@@ -57,9 +64,10 @@ function Map({ markers }) {
                                         <InfoWindowF
                                             onCloseClick={() => setSelectedMarker(null)}
                                         >
-                                            <div style={{ margin: `14px` }}>
+                                            <div style={{ margin: `14px`,cursor:`pointer` }} onClick={() => navegacion(`/detalle/${marker.idpropiedad}`)}>
                                                 <b>{marker.title}</b>
                                                 <p>{marker.description}</p>
+                                                <p style={{ color:(marker.estado==='AC' ? 'Blue': 'red') }}>{marker.estado ==='AC' ? 'Disponible' : 'No disponoble'}</p>
                                             </div>
                                         </InfoWindowF>
                                     )}

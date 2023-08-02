@@ -1,14 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
-import { separadorMiles } from "./utils/Separador";
-import DetallePropiedad from "./DetallePropiedad";
-import { useState } from 'react'
+import { separadorMiles } from "./utils/Separador"; 
 import { Carousel } from "react-bootstrap";
 
 const Catalogo = ({ dato, usuario, t }) => {
-    //console.log(dato)
-    const [detalle, setDetalle] = useState(false);
-    const [propiedad, setPropiedad] = useState(null);
+    
     const navigate = useNavigate();
     function navegacion(direccion) {
         navigate(direccion);
@@ -22,11 +18,9 @@ const Catalogo = ({ dato, usuario, t }) => {
         }
     }
 
-    const onchangeDetalle = (e, valor) => {
+    const onchangeDetalle = (e, idpropiedad) => {
         e.preventDefault();
-        setPropiedad(valor)
-        setDetalle(!detalle);
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        navegacion(`/detalle/${idpropiedad}`)
     }
 
     const catalogo = () => (
@@ -36,7 +30,7 @@ const Catalogo = ({ dato, usuario, t }) => {
                     return <div
                         key={index}
                         className="card m-1 shadow bg-white rounded"
-                        style={{ minWidth: `300px`, maxWidth: `500px` }}
+                        style={{ minWidth: `400px`, maxWidth: `600px` }}
                     >
                         <Carousel fade interval={90000}>
                             {
@@ -50,7 +44,7 @@ const Catalogo = ({ dato, usuario, t }) => {
                             }
                         </Carousel>
 
-                        <div className="card-body" style={{ cursor:`pointer` }} onClick={(e) => onchangeDetalle(e, row)}>
+                        <div className="card-body" style={{ cursor: `pointer` }} onClick={(e) => onchangeDetalle(e, row?.idpropiedad)}>
                             <h5 className="card-titulo">{row.titulo}</h5>
                             <p className="card-text">{row.descripcion}</p>
                             <p className="card-text"><small className="text-muted">{separadorMiles(parseInt(row.precio))}</small></p>
@@ -73,7 +67,6 @@ const Catalogo = ({ dato, usuario, t }) => {
                     <img key={index} src={'http://186.158.152.141:4002/' + name} alt=".." />
                 </div>
             </Carousel.Item>
-
         }
     }
 
@@ -85,11 +78,7 @@ const Catalogo = ({ dato, usuario, t }) => {
                         <h1>Catálogo</h1>
                     </div>
                     {nuevoRegistro()}
-                    {
-                        detalle === true ?
-                            <DetallePropiedad onchangeDetalle={onchangeDetalle} propiedad={propiedad} /> :
-                            catalogo()
-                    }
+                    {catalogo()}
                 </div>
             </section>
         </div>
