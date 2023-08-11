@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/barrio';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/barrio';
 
 export const getBarrio = async ({token,param}) => {
     //CONFIGURACION DE TOKEN

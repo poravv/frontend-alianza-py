@@ -31,17 +31,17 @@ Table of contents
 /* Typography */
 body, ul, li, p, a, label, input, div {
   /*font-family: 'Roboto', sans-serif;*/
-  font-size: 18px !important;
-  font-weight: 300 !important;
+  font-size: 16px !important;
+  font-weight: 200 !important;
 }
 .h1 {
   /*font-family: 'Roboto', sans-serif;*/
-  font-size: 48px !important;
+  font-size: 32px !important;
   font-weight: 200 !important;
 }
 .h2 {
   /*font-family: 'Roboto', sans-serif;*/
-  font-size: 30px !important;
+  font-size: 25px !important;
   font-weight: 300;
 }
 .h3 {
@@ -102,7 +102,7 @@ body, ul, li, p, a, label, input, div {
 .card.product-wap a { color: #000;}
 #carousel-related-product .slick-slide:focus { outline: none !important;}
 #carousel-related-product .slick-dots li button:before {
-  font-size: 15px;
+  font-size: 12px;
   margin-top: 20px;
 }
 /* Brand */
@@ -115,7 +115,7 @@ body, ul, li, p, a, label, input, div {
   filter: grayscale(0%);
   opacity: 1;
 }
-/* Carousel Hero */
+/* Carousel Hero */ 
 #template-mo-zay-hero-carousel .carousel-indicators li {
   margin-top: -50px;
   background-color: #59ab6e;
@@ -123,11 +123,11 @@ body, ul, li, p, a, label, input, div {
 #template-mo-zay-hero-carousel .carousel-control-next i,
 #template-mo-zay-hero-carousel .carousel-control-prev i {
   color: #59ab6e !important;
-  font-size: 2.8em !important;
+  font-size: 2.4em !important;
 }
 /* Carousel Brand */
 .tempaltemo-carousel .h1 {
-  font-size: .5em !important;
+  font-size: .4em !important;
   color: #000 !important;
 }
 /* Services */
@@ -161,7 +161,7 @@ body, ul, li, p, a, label, input, div {
 */
 /* Small devices (landscape phones, 576px and up)*/
 .product-wap .h3, .product-wap li, .product-wap i, .product-wap p {
-  font-size: 12px !important;
+  font-size: 10px !important;
 }
 .product-wap .product-color-dot {
   width: 6px;
@@ -173,15 +173,19 @@ body, ul, li, p, a, label, input, div {
 }
 
 /*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 400px) {
+  #templatemo_main_nav .navbar-nav {max-width: 450px;}
+ }
+
 @media (min-width: 768px) {
   #templatemo_main_nav .navbar-nav {max-width: 450px;}
  }
 
 /* Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) {
-  #templatemo_main_nav .navbar-nav {max-width: 550px;}
+  #templatemo_main_nav .navbar-nav {max-width: 850px;}
   #template-mo-zay-hero-carousel .carousel-item {min-height: 30rem !important;}
-  .product-wap .h3, .product-wap li, .product-wap i, .product-wap p {font-size: 18px !important;}
+  .product-wap .h3, .product-wap li, .product-wap i, .product-wap p {font-size: 10px !important;}
   .product-wap .product-color-dot {
     width: 12px;
     height: 12px;

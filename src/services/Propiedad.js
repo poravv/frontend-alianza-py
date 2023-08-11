@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/propiedad';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/propiedad';
 
 export const getPropiedad = async ({token,param}) => {
     //CONFIGURACION DE TOKEN
@@ -21,9 +21,7 @@ export const getVwPropiedad = async ({token,idvendedor}) => {
             "Authorization": `Bearer ${token}`,
         }
     };
-    //const { data } = await axios.get(baseURL, credentials);
     const { data } = await axios.get(`${baseURL}/getview/${idvendedor}`, config)
-    //console.log(data)
     return data;
 };
 
@@ -70,13 +68,13 @@ export const deletePropiedad  = async ({token,param}) => {
     return data;
 };
 
-export const updatePropiedad  = async ({token,param,json}) => {
+export const updatePropiedad  = async ({token,idpropiedad,json}) => {
     const config = {
         headers: {
             "Authorization": `Bearer ${token}`,
         }
     };
-    const { data } = await axios.put(baseURL + "/put/" + param, json, config)
+    const { data } = await axios.put(baseURL + "/put/" + idpropiedad, json, config)
     return data;
 };
 

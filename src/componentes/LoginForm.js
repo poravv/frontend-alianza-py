@@ -2,42 +2,38 @@ import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { Login } from '../services/Login'
 import { withNamespaces } from 'react-i18next';
+import { message } from "antd";
 
-function LoginForm({ t }) {
+function LoginForm({ t,initModalLogin }) {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
-    
     
     function navegacion(direccion) {
         navigate(direccion);
     }
 
     const handleLoginSubmit = async (e) => {
+        
         e.preventDefault();
+
         await Login({ usuario: usuario, password: password }).then((user) => {
-            //message.success(`${t('welcome')} ${user.body.usuario}`);
-            console.log(user)
             navegacion('/home');
+            initModalLogin();
+            message.success(`Bienvenido usuario ${usuario}`).then((e) =>{
             // eslint-disable-next-line
             window.location.href = window.location.href;
-            
+            });
         }).catch((error) => {
             setUsuario('');
             setPassword('');
-            alerta();
-            console.log(error)
+            initModalLogin();
+            message.error('Error de usuario o clave');
         });
     };
 
-    const alerta = () => {
-        return <div className="alert alert-danger" role="alert">
-            Bienvenido
-        </div>
-    }
 
     return (
-
         <div>
             <div className='login-wrap p-4 p-md-5 d-flex justify-content-center'>
                 <form className="col-6" onSubmit={handleLoginSubmit}>

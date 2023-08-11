@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/tipo_propiedad';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/tipo_propiedad';
 
 export const getTipoPropiedad = async ({token,param}) => {
     //CONFIGURACION DE TOKEN

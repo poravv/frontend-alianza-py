@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/usuario/login/';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/usuario/login/';
 
 export const Login = async (credentials) => {
     const { data } = await axios.post(baseURL, credentials);

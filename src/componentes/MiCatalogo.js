@@ -54,8 +54,7 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
     }
 
     const handleDelete = async () => {
-        //e.preventDefault();
-        console.log('Borrar: ', idborrar);
+        //console.log('Borrar: ', idborrar);
         await updatePropiedad({ token, json: { estado: 'IN' }, param: idborrar }).then((res) => {
             //console.log('Res: ', res)
             getLstMisPropiedades({ setMiCatalogo, idvendedor: idvendedor, token: token });
@@ -65,14 +64,22 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
     }
 
     const nuevoRegistro = () => {
-        //console.log(usuario?.nivel)
-        if (usuario?.nivel === 2) {
+        if (usuario?.nivel === 2||usuario?.nivel === 1) {
             return <button type="submit" className="input-group-text bg-primary text-light" onClick={() => navegacion('/nuevo')} >
                 Nuevo registro
             </button>
         }
     }
 
+
+    const onDestacar = async (idpropiedad,destacado) => {
+        const valor = destacado==='Si' ? 'No' : 'Si';
+        console.log(destacado, 'Entra en destacar ', idpropiedad,valor,)
+        
+        await updatePropiedad({ token, json: { destacado: valor }, param: idpropiedad }).then((res) => {
+            getLstMisPropiedades({ setMiCatalogo, idvendedor: idvendedor, token: token });
+        });
+    }
 
     const catalogo = () => (
         <div className="card-group ">
@@ -106,6 +113,9 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
                                     <button type="submit" className="input-group-text bg-primary text-light" onClick={() => navegacion(`/editar/${row.documento}/${row.idpropiedad}`)} >Editar</button>
                                 </div>
                                 <div className="col">
+                                    <button type="submit" className="input-group-text bg-success text-light" onClick={() => onDestacar(row.idpropiedad,row.destacado)} >{row.destacado==='Si' ? 'Des-destacar' : 'Destacar'}</button>
+                                </div>
+                                <div className="col">
                                     <button type="button" className="input-group-text bg-warning text-light" onClick={(e) => handleShow(row.idpropiedad)} >Borrar</button>
                                 </div>
                             </div>
@@ -125,7 +135,7 @@ const MiCatalogo = ({ token, idvendedor, usuario, t }) => {
         } else {
             return <Carousel.Item >
                 <div style={{ height: `40vh`, display: `flex`, justifyContent: `center` }} key={index} >
-                    <img key={index} src={'http://186.158.152.141:4002/' + name} alt=".." />
+                    <img key={index} src={'http://186.158.152.12:4002/' + name} alt=".." />
                 </div>
             </Carousel.Item>
 

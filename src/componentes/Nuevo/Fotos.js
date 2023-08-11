@@ -134,7 +134,7 @@ const Fotos = ({ t, token, propiedad, prevTab }) => {
                             imageList.map((image,index) => { 
                                 //console.log(image)
                                 return <div className='m-2' key={index}>
-                                    <img src={'http://186.158.152.141:4002/' + image?.fotos_propiedads[0]?.name} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
+                                    <img src={'http://186.158.152.12:4002/' + image?.fotos_propiedads[0]?.name} alt='...' className='card-img-top' style={{ maxWidth: `250px`, }} />
                                     <div>
                                         <button onClick={(e) => modalHandler(e, image?.fotos_propiedads[0]?.name, image?.fotos_propiedads[0]?.idfotos)} className='btn btn-dark my-2'>Ver</button>
                                     </div>
@@ -144,7 +144,7 @@ const Fotos = ({ t, token, propiedad, prevTab }) => {
                 </div>
                 <Modal style={{ content: { right: `20%`, left: `20%` } }} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
                     <div className='m-2'>
-                        <img src={'http://186.158.152.141:4002/' + currentImage} alt='...' className='card-img-top' />
+                        <img src={'http://186.158.152.12:4002/' + currentImage} alt='...' className='card-img-top' />
                         <div>
                             <button onClick={(e) => handleDelete(e, currentId, currentImage)} className='btn btn-dark my-2'>Borrar</button>
                         </div>

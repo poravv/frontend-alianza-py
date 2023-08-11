@@ -2,7 +2,7 @@ import { useMemo,useState,useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
 
 export default function ViewMarkerMap({propiedad}) {
-    console.log(propiedad)
+    //console.log(propiedad)
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_KEYMAP,
     });

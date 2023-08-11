@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/phf';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/phf';
 
 export const getPhF = async ({token,param}) => {
     //CONFIGURACION DE TOKEN

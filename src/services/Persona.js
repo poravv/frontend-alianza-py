@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/persona';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/persona';
 
 export const getPersona = async ({token,param}) => {
     //CONFIGURACION DE TOKEN
@@ -13,6 +13,32 @@ export const getPersona = async ({token,param}) => {
     const { data } = await axios.get(`${baseURL}/get`, config)
     return data;
 };
+
+export const getVwPersona = async ({token,param}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.get(`${baseURL}/getvw`, config)
+    return data;
+};
+
+
+export const getLikePersona = async ({token,param}) => {
+    //CONFIGURACION DE TOKEN
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    //const { data } = await axios.get(baseURL, credentials);
+    const { data } = await axios.get(`${baseURL}/likePersona/${param}`, config)
+    return data;
+};
+
 
 export const getPhotoPerfil = async ({token,idpersona}) => {
     //CONFIGURACION DE TOKEN
@@ -83,6 +109,16 @@ export const updatePersona  = async ({token,idpersona,json}) => {
     return data;
 };
 
+export const updateUniquePersona  = async ({token,idpersona,json}) => {
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+    const { data } = await axios.put(baseURL + "/putper/" + idpersona, json, config)
+    return data;
+};
+
 export const createPersona  = async ({token,json}) => {
     //console.log(json)
     const config = {
@@ -92,5 +128,17 @@ export const createPersona  = async ({token,json}) => {
     };
 
     const { data } =  await axios.post(baseURL + "/post/", json, config)
+    return data;
+};
+
+export const createUniquePersona  = async ({token,json}) => {
+    //console.log(json)
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    };
+
+    const { data } =  await axios.post(baseURL + "/postper/", json, config)
     return data;
 };

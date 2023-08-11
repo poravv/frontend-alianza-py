@@ -51,13 +51,10 @@ const Menu = ({ propiedad, destacados }) => {
                             <h4 className="form-label" htmlFor="fst_name" >Cantidades</h4>
                         </div>
                         <div className='row my-3'>
-                            <a className="text-decoration-none text-success" target='blanck' href={`https://wa.me/${propiedad?.whatsapp}`}><i className="fa-brands fa-whatsapp fa-fw text-success" /> {propiedad?.whatsapp}</a>
+                            Disponibles: {detalleSitios?.disponibles}
                         </div>
                         <div className='row my-3'>
-                            <a style={{ color: `black` }} className="text-decoration-none" href={`tel:${propiedad?.whatsapp}`} ><i className="fa fa-phone fa-fw"></i> {propiedad?.whatsapp}</a>
-                        </div>
-                        <div className='row my-3'>
-                            <a style={{ color: `black` }} className="text-decoration-none" href={`mailto:${propiedad?.correo_vendedor}`}><i className="fa fa-envelope fa-fw"></i> {propiedad?.correo_vendedor}</a>
+                            Vendidos: {detalleSitios?.noDispo}
                         </div>
                     </div>
                 </div>
@@ -69,23 +66,26 @@ const Menu = ({ propiedad, destacados }) => {
     return (
         <div >
             <Destacados destacados={destacados} />
-            <div style={{ justifyContent: `center`, display: `flex` }}>
-                <button type="submit" className="input-group-text bg-primary text-light m-3" onClick={() => setViewMap(!viewMap)} >
-                    {!viewMap ? 'Ver mapa de sitios..' : 'Ocultar mapa de sitios..'}
-                </button>
-            </div>
+
             <div className='flex-wrap row m-2'>
+
                 <div className='col-md-7 '>
                     <div className="container text-center text-lg-start">
-                        <div className="my-2 shadow p-3 bg-white rounded row align-items-center">
+
+                        <div className="my-2 shadow p-3 bg-white rounded row align-items-center" style={{ minHeight:`240px` }}>
+                            <div style={{ justifyContent: `center`, display: `flex` }}>
+                                <button type="submit" className="input-group-text bg-primary text-light m-3" onClick={() => setViewMap(!viewMap)} >
+                                    {!viewMap ? 'Ver mapa de sitios..' : 'Ocultar mapa de sitios..'}
+                                </button>
+                            </div>
                             {viewMap ?
-                                    <ListViewMarkerMap markers={markers} />
+                                <ListViewMarkerMap markers={markers} />
                                 : null}
                         </div>
                     </div>
                 </div>
                 <div className='col'>
-                            {detalleSitio()}
+                    {detalleSitio()}
                 </div>
             </div>
         </div>

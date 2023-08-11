@@ -10,15 +10,15 @@ export default function Destacados({ destacados }) {
     }
 
     return (
-        <div style={{ background: `#979797` }}>
-            <div className='container'>
+        <div className='bg-success'>
+            <div className='container' >
                 <Carousel interval={3000} >
                     {destacados ?
                         destacados.map((des, index) => {
                             return (
-                                <Carousel.Item key={index} >
-                                    <div className="mx-auto col-lg-8 order-lg-last" style={{ minHeight: `450px`, filter: `brightness(40%)` }}>
-                                        <img width={900} height={500} src={'http://186.158.152.141:4002/' + des?.Propiedad_has_fotos[0]?.fotos_propiedads[0]?.name} alt='..' />
+                                <Carousel.Item key={index} style={{ marginTop:`10px`,marginBottom:`10px`,textAlign:`center` }} >
+                                    <div  style={{ minHeight: `450px`, filter: `brightness(40%)` }}>
+                                        <img style={{ borderRadius:`10px` }} width={900} height={500} src={'http://186.158.152.12:4002/' + des?.Propiedad_has_fotos[0]?.fotos_propiedads[0]?.name} alt='..' />
                                     </div>
                                     <Carousel.Caption style={{ display:`flex`,justifyContent:`center`,alignItems:`center`,textAlign:`center`,cursor:`pointer` }} onClick={() => navegacion(`/detalle/${des?.idpropiedad}`)} >
                                         <div className='row' >

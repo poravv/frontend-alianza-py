@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseURL = 'http://186.158.152.141:4002/alianza/api/fotos';
-const fp =      'http://186.158.152.141:4002/alianza/api/fp';
+const baseURL = 'http://186.158.152.12:4002/alianza/api/fotos';
+const fp =      'http://186.158.152.12:4002/alianza/api/fp';
 
 export const getFotos = async ({token}) => {
     //CONFIGURACION DE TOKEN

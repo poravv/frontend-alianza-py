@@ -6,6 +6,8 @@ import Header from "./componentes/Header";
 import Error from "./componentes/Error";
 import { useState, useEffect } from 'react'
 import Usuario from "./componentes/Usuario";
+import ListBarrios from "./componentes/admin/Barrios/ListBarrios"
+import ListCiudad from "./componentes/admin/Ciudad/ListCiudad"
 import {
   getLstTipoPropiedad,
   getLstCiudades,
@@ -18,6 +20,17 @@ import Nuevo from "./componentes/Nuevo/Nuevo";
 import MiCatalogo from "./componentes/MiCatalogo";
 import Editar from "./componentes/Nuevo/Editar";
 import DetallePropiedad from "./componentes/DetallePropiedad";
+import NewBarrio from "./componentes/admin/Barrios/NewBarrios";
+import NewCiudad from "./componentes/admin/Ciudad/NewCiudad";
+import ListTipoPropiedad from "./componentes/admin/TipoPropiedad/ListTipoPropiedad";
+import NewTipoPropiedad from "./componentes/admin/TipoPropiedad/NewTipoPropiedad";
+import ListaVendedor from "./componentes/admin/Vendedor/ListaVendedor";
+import NuevoVendedor from "./componentes/admin/Vendedor/NuevoVendedor";
+import ListaUsuario from "./componentes/admin/Usuario/ListaUsuario";
+import NuevoUsuario from "./componentes/admin/Usuario/NuevoUsuario";
+import ListaPersona from "./componentes/admin/Persona/ListaPersona";
+import NuevoPersona from "./componentes/admin/Persona/NuevaPersona";
+import ListaPropiedades from "./componentes/admin/Propiedades/ListaPropiedades";
 
 function App() {
   const loggedUser = window.localStorage.getItem('logAlianzaUser');
@@ -53,6 +66,20 @@ function App() {
           <Route path="/editar/:documento/:idpropiedad" element={<Editar token={userApp?.token} ciudades={ciudades} usuario={userApp?.body} tipoPropiedad={tipoPropiedad} />} />
           <Route path="/nuevo" element={<Nuevo token={userApp?.token} ciudades={ciudades} usuario={userApp?.body} tipoPropiedad={tipoPropiedad} />} />
           <Route path="/usuario" element={<Usuario token={userApp?.token} usuario={userApp?.body} ciudades={ciudades} />} />
+          <Route path="/barrio" element={<ListBarrios token={userApp?.token} />} />
+          <Route path="/crearbarrio" element={<NewBarrio token={userApp?.token} />} />
+          <Route path="/ciudad" element={<ListCiudad token={userApp?.token} />} />
+          <Route path="/crearciudad" element={<NewCiudad token={userApp?.token} />} />
+          <Route path="/tipoPropiedad" element={<ListTipoPropiedad token={userApp?.token} />} />
+          <Route path="/creartipoPropiedad" element={<NewTipoPropiedad token={userApp?.token} />} />\
+          <Route path="/vendedor" element={<ListaVendedor token={userApp?.token} />} />
+          <Route path="/crearvendedor" element={<NuevoVendedor token={userApp?.token} />} />
+          <Route path="/usuarios" element={<ListaUsuario token={userApp?.token} />} />
+          <Route path="/crearusuario" element={<NuevoUsuario token={userApp?.token} />} />
+          <Route path="/personas" element={<ListaPersona token={userApp?.token} />} />
+          <Route path="/crearpersona" element={<NuevoPersona token={userApp?.token} />} />
+          
+          <Route path="/listapropiedades" element={<ListaPropiedades token={userApp?.token} />} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
